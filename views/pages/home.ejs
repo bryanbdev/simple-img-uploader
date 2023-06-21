@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" type="text/css" href="/css/home.css" />
+  </head>
+  <body>
+    <div><%- include('../partials/header') %></div>
+
+    <h1>Image Uploader</h1>
+    <p>All images will be shown below:</p>
+    <% getAllImgs.map(({name, author})=> { %>
+    <img src="../../uploads/<%= name %>" alt="img" />
+    <% if(author){%>
+    <h4>Author: <%= author %></h4>
+    <% }}) %>
+    <footer><%- include('../partials/footer') %></footer>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body>
+    <div><%- include('../partials/header') %></div>
+
+    <h1>Choose a image to upload</h1>
+    <form>
+      <div name="image err"></div>
+      <input type="text" name="author" placeholder="author" id="author" />
+      <!-- "multiple" allow us to select multiple files -->
+      <input type="file" multiple name="image" id="file" />
+      <button type="submit">Upload</button>
+    </form>
+    <footer><%- include('../partials/footer') %></footer>
+
+    <script>
+      // target HTML elments
+      const form = document.querySelector("form");
+      const files = document.querySelector("#file");
+
+      form.addEventListener("submit", submitForm);
+
+      async function submitForm(e) {
+        // prevent default submit action
+        e.preventDefault();
+
+        // form value data
+        const formData = new FormData();
+        const author = formData.append("author", form.author.value);
+
+        // loop through images/files selected
+        for (let i = 0; i < files.files.length; i++) {
+          // fieldname can be whatever you want --> "files"
+          formData.append("files", files.files[i]);
+        }
+
+        // send image data request to database from frontend
+        try {
+          const res = await fetch("http://localhost:5000/upload", {
+            method: "POST",
+            body: formData,
+            header: { "Content-Type": "multipart/form-data" },
+          });
+
+          const data = await res.json();
+          console.log(data);
+          // redirect to home page
+          location.assign("/");
+        } catch (error) {
+          console.log("ERROR HAPPENED!!!" + error.message);
+        }
+      }
+    </script>
+  </body>
+</html>
